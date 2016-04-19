@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lejiyu.payroll.Dao.SalaryMapper" >
+  <resultMap id="BaseResultMap" type="com.lejiyu.payroll.Entity.Salary" >
+    <id column="employ_number" property="employNumber" jdbcType="VARCHAR" />
+    <result column="expect_salary" property="expectSalary" jdbcType="DECIMAL" />
+    <result column="actually_salary" property="actuallySalary" jdbcType="DECIMAL" />
+    <result column="fine" property="fine" jdbcType="DECIMAL" />
+    <result column="overtime" property="overtime" jdbcType="INTEGER" />
+    <result column="overtime_salary" property="overtimeSalary" jdbcType="DECIMAL" />
+    <result column="office_day" property="officeDay" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    employ_number, expect_salary, actually_salary, fine, overtime, overtime_salary, office_day
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from salary_table
+    where employ_number = #{employNumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from salary_table
+    where employ_number = #{employNumber,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.lejiyu.payroll.Entity.Salary" >
+    insert into salary_table (employ_number, expect_salary, actually_salary, 
+      fine, overtime, overtime_salary, 
+      office_day)
+    values (#{employNumber,jdbcType=VARCHAR}, #{expectSalary,jdbcType=DECIMAL}, #{actuallySalary,jdbcType=DECIMAL}, 
+      #{fine,jdbcType=DECIMAL}, #{overtime,jdbcType=INTEGER}, #{overtimeSalary,jdbcType=DECIMAL}, 
+      #{officeDay,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lejiyu.payroll.Entity.Salary" >
+    insert into salary_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="employNumber != null" >
+        employ_number,
+      </if>
+      <if test="expectSalary != null" >
+        expect_salary,
+      </if>
+      <if test="actuallySalary != null" >
+        actually_salary,
+      </if>
+      <if test="fine != null" >
+        fine,
+      </if>
+      <if test="overtime != null" >
+        overtime,
+      </if>
+      <if test="overtimeSalary != null" >
+        overtime_salary,
+      </if>
+      <if test="officeDay != null" >
+        office_day,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="employNumber != null" >
+        #{employNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="expectSalary != null" >
+        #{expectSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="actuallySalary != null" >
+        #{actuallySalary,jdbcType=DECIMAL},
+      </if>
+      <if test="fine != null" >
+        #{fine,jdbcType=DECIMAL},
+      </if>
+      <if test="overtime != null" >
+        #{overtime,jdbcType=INTEGER},
+      </if>
+      <if test="overtimeSalary != null" >
+        #{overtimeSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="officeDay != null" >
+        #{officeDay,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lejiyu.payroll.Entity.Salary" >
+    update salary_table
+    <set >
+      <if test="expectSalary != null" >
+        expect_salary = #{expectSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="actuallySalary != null" >
+        actually_salary = #{actuallySalary,jdbcType=DECIMAL},
+      </if>
+      <if test="fine != null" >
+        fine = #{fine,jdbcType=DECIMAL},
+      </if>
+      <if test="overtime != null" >
+        overtime = #{overtime,jdbcType=INTEGER},
+      </if>
+      <if test="overtimeSalary != null" >
+        overtime_salary = #{overtimeSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="officeDay != null" >
+        office_day = #{officeDay,jdbcType=INTEGER},
+      </if>
+    </set>
+    where employ_number = #{employNumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lejiyu.payroll.Entity.Salary" >
+    update salary_table
+    set expect_salary = #{expectSalary,jdbcType=DECIMAL},
+      actually_salary = #{actuallySalary,jdbcType=DECIMAL},
+      fine = #{fine,jdbcType=DECIMAL},
+      overtime = #{overtime,jdbcType=INTEGER},
+      overtime_salary = #{overtimeSalary,jdbcType=DECIMAL},
+      office_day = #{officeDay,jdbcType=INTEGER}
+    where employ_number = #{employNumber,jdbcType=VARCHAR}
+  </update>
+</mapper>
