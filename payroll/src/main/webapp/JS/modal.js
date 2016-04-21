@@ -1,4 +1,3 @@
-window.userName = null;
 
 var modalModel = {
     title : ko.observable(''),
@@ -8,6 +7,7 @@ var modalModel = {
 function initModal(title, body) {
     modalModel.title(title);
     modalModel.body(body);
+    $('#myModal').modal('show');
 }
 
 ko.attach("modalModel", modalModel);
