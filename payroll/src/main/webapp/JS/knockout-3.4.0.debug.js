@@ -5870,30 +5870,3 @@ ko.exportSymbol('nativeTemplateEngine', ko.nativeTemplateEngine);
 }());
 })();
 
-ko.bindingHandlers.showVisible = {
-   init : function(element, valueAccessor) {
-        var value = ko.utils.unwrapObservable(valueAccessor());
-        if (value) {
-             $(element).show();
-       } else {
-             $(element).hide();
-         };
-    },
-     update : function(element, valueAccessor) {
-         var value = ko.utils.unwrapObservable(valueAccessor());
-         if (value) {
-             $(element).show(200).animate({
-               opacity : '1'
-            });
-        } else {
-            $(element).animate({
-                opacity : '0.2'
-            }).hide(200);
-         };
-     }
- };
-
-function isNullOrEmpty(object) {
-    return object == null || object == '' || object == undefined;
-}
-

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lejiyu.payroll.Dao.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.lejiyu.payroll.Entity.Department" >
+    <id column="department_number" property="departmentNumber" jdbcType="VARCHAR" />
+    <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
+    <result column="department_size" property="departmentSize" jdbcType="INTEGER" />
+    <result column="department_manager" property="departmentManager" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    department_number, department_name, department_size, department_manager
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from department_table
+    where department_number = #{departmentNumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from department_table
+    where department_number = #{departmentNumber,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.lejiyu.payroll.Entity.Department" >
+    insert into department_table (department_number, department_name, 
+      department_size, department_manager)
+    values (#{departmentNumber,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR}, 
+      #{departmentSize,jdbcType=INTEGER}, #{departmentManager,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lejiyu.payroll.Entity.Department" >
+    insert into department_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="departmentNumber != null" >
+        department_number,
+      </if>
+      <if test="departmentName != null" >
+        department_name,
+      </if>
+      <if test="departmentSize != null" >
+        department_size,
+      </if>
+      <if test="departmentManager != null" >
+        department_manager,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="departmentNumber != null" >
+        #{departmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentName != null" >
+        #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentSize != null" >
+        #{departmentSize,jdbcType=INTEGER},
+      </if>
+      <if test="departmentManager != null" >
+        #{departmentManager,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lejiyu.payroll.Entity.Department" >
+    update department_table
+    <set >
+      <if test="departmentName != null" >
+        department_name = #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentSize != null" >
+        department_size = #{departmentSize,jdbcType=INTEGER},
+      </if>
+      <if test="departmentManager != null" >
+        department_manager = #{departmentManager,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where department_number = #{departmentNumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lejiyu.payroll.Entity.Department" >
+    update department_table
+    set department_name = #{departmentName,jdbcType=VARCHAR},
+      department_size = #{departmentSize,jdbcType=INTEGER},
+      department_manager = #{departmentManager,jdbcType=VARCHAR}
+    where department_number = #{departmentNumber,jdbcType=VARCHAR}
+  </update>
+</mapper>

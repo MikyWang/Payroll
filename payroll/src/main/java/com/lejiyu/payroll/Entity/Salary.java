@@ -3,7 +3,7 @@ package com.lejiyu.payroll.Entity;
 import java.math.BigDecimal;
 
 public class Salary {
-    private String employNumber;
+    private Long employNumber;
 
     private BigDecimal expectSalary;
 
@@ -17,12 +17,12 @@ public class Salary {
 
     private Integer officeDay;
 
-    public String getEmployNumber() {
+    public Long getEmployNumber() {
         return employNumber;
     }
 
-    public void setEmployNumber(String employNumber) {
-        this.employNumber = employNumber == null ? null : employNumber.trim();
+    public void setEmployNumber(Long employNumber) {
+        this.employNumber = employNumber;
     }
 
     public BigDecimal getExpectSalary() {

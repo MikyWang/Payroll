@@ -13,7 +13,7 @@ public class SalaryService {
 	@Resource
 	SalaryMapper salaryMapper;
 
-	public Salary selectSalary(String employNumber) {
+	public Salary selectSalary(Long employNumber) {
 		return salaryMapper.selectByPrimaryKey(employNumber);
 	}
 

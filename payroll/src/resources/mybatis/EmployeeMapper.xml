@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lejiyu.payroll.Dao.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.lejiyu.payroll.Entity.Employee" >
+    <id column="employ_number" property="employNumber" jdbcType="BIGINT" />
+    <result column="employ_name" property="employName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="education" property="education" jdbcType="VARCHAR" />
+    <result column="department_number" property="departmentNumber" jdbcType="VARCHAR" />
+    <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    employ_number, employ_name, sex, education, department_number, department_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_table
+    where employ_number = #{employNumber,jdbcType=BIGINT}
+  </select>
+  
+   <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from employee_table
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from employee_table
+    where employ_number = #{employNumber,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.lejiyu.payroll.Entity.Employee" >
+    insert into employee_table (employ_number, employ_name, sex, 
+      education, department_number, department_name
+      )
+    values (#{employNumber,jdbcType=BIGINT}, #{employName,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{education,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lejiyu.payroll.Entity.Employee" >
+    insert into employee_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="employNumber != null" >
+        employ_number,
+      </if>
+      <if test="employName != null" >
+        employ_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="education != null" >
+        education,
+      </if>
+      <if test="departmentNumber != null" >
+        department_number,
+      </if>
+      <if test="departmentName != null" >
+        department_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="employNumber != null" >
+        #{employNumber,jdbcType=BIGINT},
+      </if>
+      <if test="employName != null" >
+        #{employName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentNumber != null" >
+        #{departmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentName != null" >
+        #{departmentName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lejiyu.payroll.Entity.Employee" >
+    update employee_table
+    <set >
+      <if test="employName != null" >
+        employ_name = #{employName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentNumber != null" >
+        department_number = #{departmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentName != null" >
+        department_name = #{departmentName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where employ_number = #{employNumber,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lejiyu.payroll.Entity.Employee" >
+    update employee_table
+    set employ_name = #{employName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      department_number = #{departmentNumber,jdbcType=VARCHAR},
+      department_name = #{departmentName,jdbcType=VARCHAR}
+    where employ_number = #{employNumber,jdbcType=BIGINT}
+  </update>
+</mapper>

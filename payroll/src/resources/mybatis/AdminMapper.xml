@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lejiyu.payroll.Dao.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.lejiyu.payroll.Entity.Admin" >
+    <id column="admin_number" property="adminNumber" jdbcType="BIGINT" />
+    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+    <result column="department_number" property="departmentNumber" jdbcType="VARCHAR" />
+    <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
+    <result column="employee_number" property="employeeNumber" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    admin_number, admin_name, department_number, department_name, employee_number
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin_table
+    where admin_number = #{adminNumber,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from admin_table
+    where admin_number = #{adminNumber,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.lejiyu.payroll.Entity.Admin" >
+    insert into admin_table (admin_number, admin_name, department_number, 
+      department_name, employee_number)
+    values (#{adminNumber,jdbcType=BIGINT}, #{adminName,jdbcType=VARCHAR}, #{departmentNumber,jdbcType=VARCHAR}, 
+      #{departmentName,jdbcType=VARCHAR}, #{employeeNumber,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lejiyu.payroll.Entity.Admin" >
+    insert into admin_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adminNumber != null" >
+        admin_number,
+      </if>
+      <if test="adminName != null" >
+        admin_name,
+      </if>
+      <if test="departmentNumber != null" >
+        department_number,
+      </if>
+      <if test="departmentName != null" >
+        department_name,
+      </if>
+      <if test="employeeNumber != null" >
+        employee_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adminNumber != null" >
+        #{adminNumber,jdbcType=BIGINT},
+      </if>
+      <if test="adminName != null" >
+        #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentNumber != null" >
+        #{departmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentName != null" >
+        #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeNumber != null" >
+        #{employeeNumber,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lejiyu.payroll.Entity.Admin" >
+    update admin_table
+    <set >
+      <if test="adminName != null" >
+        admin_name = #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentNumber != null" >
+        department_number = #{departmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentName != null" >
+        department_name = #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeNumber != null" >
+        employee_number = #{employeeNumber,jdbcType=BIGINT},
+      </if>
+    </set>
+    where admin_number = #{adminNumber,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lejiyu.payroll.Entity.Admin" >
+    update admin_table
+    set admin_name = #{adminName,jdbcType=VARCHAR},
+      department_number = #{departmentNumber,jdbcType=VARCHAR},
+      department_name = #{departmentName,jdbcType=VARCHAR},
+      employee_number = #{employeeNumber,jdbcType=BIGINT}
+    where admin_number = #{adminNumber,jdbcType=BIGINT}
+  </update>
+</mapper>

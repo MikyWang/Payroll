@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<script src="JS/modal.js"></script>
-</head>
-<body>
-	<div data-model="modalModel" class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
+	<script src="JS/modal.js"></script>
+	<div data-model="modalModel" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -22,5 +16,3 @@
 			</div>
 		</div>
 	</div>
-</body>
-</html>
