@@ -88,6 +88,8 @@ public class UserService {
 		return empInformation;
 	}
 
+	
+	
 	public Admin selectAdmin(Long adminNumber) {
 		return adminMapper.selectByPrimaryKey(adminNumber);
 	}

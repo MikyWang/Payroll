@@ -9,7 +9,7 @@
     </head>
 
     <body>
-          <jsp:include page="navbar.jsp" />
+          <%@ include file="navbar.jsp" %>
             <div class="container" data-model="loginModel">
 
                 <div class="row">

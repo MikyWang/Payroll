@@ -57,5 +57,4 @@ $(document).ready(function () {
     getUser();
 });
 
-
 ko.attach("navModel", navModel);
