@@ -19,6 +19,7 @@ import com.lejiyu.payroll.Common.LoginType;
 import com.lejiyu.payroll.Entity.Admin;
 import com.lejiyu.payroll.Entity.Employee;
 import com.lejiyu.payroll.Entity.User;
+import com.lejiyu.payroll.Services.SalaryService;
 import com.lejiyu.payroll.Services.UserService;
 
 @Controller
@@ -26,6 +27,9 @@ public class UserController extends BaseController {
 
 	@Resource
 	UserService userService;
+
+	@Resource
+	SalaryService salaryService;
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	@ResponseBody
@@ -39,6 +43,7 @@ public class UserController extends BaseController {
 			if (!autoLogin) {
 				session.setMaxInactiveInterval(30 * 60);
 			}
+			session.setAttribute("loginUser", map.get("loginUser"));
 			session.setAttribute("user", map.get("user"));
 			session.setAttribute("power", map.get("power"));
 			if (map.get("power").toString().equals(LoginType.admin)) {
@@ -65,14 +70,48 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> getUser(HttpServletResponse response) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (session.getAttribute("user") == null) {
+		if (session.getAttribute("user") == null || session.getAttribute("loginUser") == null) {
 			response.setStatus(404);
 			response.getWriter().write("没有值");
 		}
 		if (session.getAttribute("user") != null) {
-				map.put("user", session.getAttribute("user"));
+			map.put("user", session.getAttribute("user"));
+			User user = (User) session.getAttribute("loginUser");
+			user.setPassword("");
+			map.put("account", user);
 		}
 		return map;
+	}
+
+	@RequestMapping(value = "deleteEmployee", method = RequestMethod.POST)
+	public void deleteEmployee(Long employeeNumber, HttpServletResponse response) throws Exception {
+		try {
+			userService.deleteEmployee(employeeNumber);
+			salaryService.deleteSalary(employeeNumber);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "powerUp", method = RequestMethod.POST)
+	public void powerUp(Long employeeNumber, HttpServletResponse response) throws Exception {
+		try {
+			userService.powerUp(employeeNumber);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "powerDown", method = RequestMethod.POST)
+	public void powerDown(Long employeeNumber, HttpServletResponse response) throws Exception {
+		try {
+			userService.powerDown(employeeNumber);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
 	}
 
 	@RequestMapping(value = "getEmployees")

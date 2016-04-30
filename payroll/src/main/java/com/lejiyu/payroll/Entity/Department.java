@@ -7,7 +7,7 @@ public class Department {
 
     private Integer departmentSize;
 
-    private String departmentManager;
+    private Long departmentManager;
 
     public String getDepartmentNumber() {
         return departmentNumber;
@@ -33,11 +33,11 @@ public class Department {
         this.departmentSize = departmentSize;
     }
 
-    public String getDepartmentManager() {
+    public Long getDepartmentManager() {
         return departmentManager;
     }
 
-    public void setDepartmentManager(String departmentManager) {
-        this.departmentManager = departmentManager == null ? null : departmentManager.trim();
+    public void setDepartmentManager(Long departmentManager) {
+        this.departmentManager = departmentManager;
     }
 }

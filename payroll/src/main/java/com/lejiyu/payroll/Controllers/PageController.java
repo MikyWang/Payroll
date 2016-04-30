@@ -1,6 +1,5 @@
 package com.lejiyu.payroll.Controllers;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +36,16 @@ public class PageController extends BaseController {
 		return success;
 	}
 
+	@RequestMapping(value = "processbar")
+	public String getProcess() {
+		return "processbar";
+	}
+
+	@RequestMapping(value="addEmployee")
+	public String addEmployee(){
+		return "addEmployee";
+	}
+	
 	public String verifySign(String url) {
 		String actUrl = "login";
 		if (session.getAttribute("user") != null) {

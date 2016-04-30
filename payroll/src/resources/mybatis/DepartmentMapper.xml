@@ -5,7 +5,7 @@
     <id column="department_number" property="departmentNumber" jdbcType="VARCHAR" />
     <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
     <result column="department_size" property="departmentSize" jdbcType="INTEGER" />
-    <result column="department_manager" property="departmentManager" jdbcType="VARCHAR" />
+    <result column="department_manager" property="departmentManager" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     department_number, department_name, department_size, department_manager
@@ -16,6 +16,12 @@
     from department_table
     where department_number = #{departmentNumber,jdbcType=VARCHAR}
   </select>
+  <select id="selectByEmployeeNumber" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from department_table
+    where department_manager = #{departmentManager,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from department_table
     where department_number = #{departmentNumber,jdbcType=VARCHAR}
@@ -24,7 +30,7 @@
     insert into department_table (department_number, department_name, 
       department_size, department_manager)
     values (#{departmentNumber,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR}, 
-      #{departmentSize,jdbcType=INTEGER}, #{departmentManager,jdbcType=VARCHAR})
+      #{departmentSize,jdbcType=INTEGER}, #{departmentManager,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.lejiyu.payroll.Entity.Department" >
     insert into department_table
@@ -53,7 +59,7 @@
         #{departmentSize,jdbcType=INTEGER},
       </if>
       <if test="departmentManager != null" >
-        #{departmentManager,jdbcType=VARCHAR},
+        #{departmentManager,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -67,7 +73,7 @@
         department_size = #{departmentSize,jdbcType=INTEGER},
       </if>
       <if test="departmentManager != null" >
-        department_manager = #{departmentManager,jdbcType=VARCHAR},
+        department_manager = #{departmentManager,jdbcType=BIGINT},
       </if>
     </set>
     where department_number = #{departmentNumber,jdbcType=VARCHAR}
@@ -76,7 +82,7 @@
     update department_table
     set department_name = #{departmentName,jdbcType=VARCHAR},
       department_size = #{departmentSize,jdbcType=INTEGER},
-      department_manager = #{departmentManager,jdbcType=VARCHAR}
+      department_manager = #{departmentManager,jdbcType=BIGINT}
     where department_number = #{departmentNumber,jdbcType=VARCHAR}
   </update>
 </mapper>

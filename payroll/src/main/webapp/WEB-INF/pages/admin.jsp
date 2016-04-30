@@ -21,12 +21,22 @@
             </div>
             <div id="department" class="container" data-model="adminModel">
                 <div class="row">
-                    <div class=" col-sm-offset-2 col-sm-8">
-                        <div class="panel panel-primary ">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">所属部门成员</h3>
+                    <div class=" col-sm-offset-2 col-sm-8 col-xs-12">
+                        <div class="panel panel-default ">
+                            <div class="panel-heading col-xs-12">
+                                <button style="margin-top : -5px" class="btn btn-default" data-toggle="tooltip" title="查看部门信息" data-bind="click: departmentDetail , disabled : !isSelectDepartment()">
+                                    <span class="glyphicon glyphicon-user text-primary"></span>
+                                </button>
+                                <select class="form-control form-inline" data-bind="options: departments , value : selectDepartment, optionsCaption : '选择部门'"></select>
+                                <div class=" pull-right">
+                                    <a href="javascript:void(0);" data-toggle="tooltip" title="添加员工" data-bind="click: addEmployee"> <span class="glyphicon glyphicon-plus"></span>&nbsp;</a>
+                                    <a href="javascript:void(0);" data-toggle="tooltip" title="保存修改"> <span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;</a>
+                                    <a href="javascript:void(0);" data-toggle="tooltip" title="缩小" data-bind="click: departmentToggle , visible : ownDepartShow"> <span class="glyphicon glyphicon-resize-small"></span></a>
+                                    <a href="javascript:void(0);" data-toggle="tooltip" title="放大" data-bind="click: departmentToggle , visible : !ownDepartShow()"> <span class="glyphicon glyphicon-resize-full"></span></a>
+                                </div>
+
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body" data-bind="showVisible: ownDepartShow">
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr class=" text-info">
@@ -46,38 +56,42 @@
                                                 本月工资
                                             </th>
                                             <th>
+                                                操作
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody data-bind="foreach: employList">
+                                    <tbody data-bind="foreach: selectDepartEmployees">
                                         <tr>
                                             <td>
-                                                <span data-bind="html: employNumber"></span>
+                                                <a href="javascript:void(0);" data-bind="html: employNumber , click : userDetail"></a>
                                             </td>
                                             <td>
-                                                <a class="text-primary" href="javascript:void(0);" data-bind="html: employName , click : userDetail"></a>
+                                                <input type="text" id="inputName" class="form-control form-inline" required="required" data-bind="value: employName, valueUpdate : 'afterkeydown'"> &nbsp;
+                                                <span class="label " data-bind="html: power, css : powerStyle"></span>
                                             </td>
                                             <td>
                                                 <span data-bind="html: sex"></span>
                                             </td>
-                                            <td>
-                                                <a class="text-primary" href="javascript:void(0);" data-bind="html: departmentName,click : departDetail"></a>
+                                            <td class="dropdown">
+                                                <select id="inputDepartment" class="form-control" data-bind="options: $root.departments ,value : departmentName"></select>
                                             </td>
                                             <td class="dropdown ">
-                                                <a href="javascript:void(0);" class="dropdown-toggle" id="moneyDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <a href="javascript:void(0);" class="dropdown-toggle " id="moneyDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     <span class="text-warning">￥</span>
                                                     <span class="text-danger " data-bind="html: actMoney"></span>
-                                                    <span class="glyphicon glyphicon-chevron-down text-danger "></span>
+                                                    <span class="caret"></span>
                                                 </a>
-                                                <table class="dropdown-menu  table table-hover table-striped" aria-labelledby="moneyDrop">
+                                                <table class="dropdown-menu  table table-hover table-striped" style="min-width:200px" aria-labelledby="moneyDrop">
                                                     <tbody>
                                                         <tr>
                                                             <td>
                                                                 基本工资:
                                                             </td>
                                                             <td>
-                                                                <span class="text-warning">￥&nbsp;</span>
-                                                                <span class="text-danger " data-bind="html: expMoney"></span>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">￥</div>
+                                                                    <input type="text text-danger" class="form-control" id="exampleInputAmount" placeholder="Amount" data-bind="value: expMoney, valueUpdate:'afterkeydown'">
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -85,8 +99,10 @@
                                                                 迟到罚款:
                                                             </td>
                                                             <td>
-                                                                <span class="text-warning">￥&nbsp;</span>
-                                                                <span class="text-danger " data-bind="html: fine"></span>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">￥</div>
+                                                                    <input type="text text-danger" class="form-control" placeholder="罚款" data-bind="value: fine, valueUpdate:'afterkeydown'">
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -94,8 +110,10 @@
                                                                 加班时长:
                                                             </td>
                                                             <td>
-                                                                <span class="text-warning">￥&nbsp;</span>
-                                                                <span class="text-danger " data-bind="html: overtime"></span>
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" placeholder="小时" data-bind="value: overtime,valueUpdate:'afterkeydown'">
+                                                                    <div class="input-group-addon">小时</div>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -103,8 +121,10 @@
                                                                 加班工资:
                                                             </td>
                                                             <td>
-                                                                <span class="text-warning">￥&nbsp;</span>
-                                                                <span class="text-danger " data-bind="html: overtimeSalary"></span>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">￥</div>
+                                                                    <input type="text text-danger" class="form-control" placeholder="加班工资" data-bind="value: overtimeSalary, valueUpdate:'afterkeydown'">
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -112,17 +132,23 @@
                                                                 上班天数:
                                                             </td>
                                                             <td>
-                                                                <span class="text-warning">￥&nbsp;</span>
-                                                                <span class="text-danger " data-bind="html: officeDay"></span>
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" placeholder="天" data-bind="value: officeDay,valueUpdate:'afterkeydown'">
+                                                                    <div class="input-group-addon">天</div>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </td>
                                             <td>
-                                                <a href="javascript:void(0);" class="btn btn-primary"> <span class="glyphicon glyphicon-pencil"></span>&nbsp; 编辑</a>
-                                                <a href="javascript:void(0);" class="btn btn-danger"> <span class="glyphicon glyphicon-minus"></span>&nbsp;删除</a>
-                                                <a href="javascript:void(0);" class="btn btn-info"> <span class="glyphicon glyphicon-user"></span>&nbsp;管理员</a>
+                                                <a href="javascript:void(0);" data-toggle="tooltip" title="删除" data-bind="visible: !isAdmin(), click : deleteEmployee"> <span class="glyphicon glyphicon-remove"></span>&nbsp;</a>
+                                                <a href="javascript:void(0);" data-bind="visible: !isAdmin() ,click :togglePower">
+                                                    <span class="glyphicon glyphicon-arrow-up text-success"></span>
+                                                </a>
+                                                <a href="javascript:void(0);" data-bind="visible: isAdmin,click : togglePower">
+                                                    <span class="glyphicon glyphicon-arrow-down text-danger"></span>
+                                                </a>
                                             </td>
                                         </tr>
                                     </tbody>

@@ -17,4 +17,12 @@ public class SalaryService {
 		return salaryMapper.selectByPrimaryKey(employNumber);
 	}
 
+	public void deleteSalary(long employeeNumber) throws Exception {
+		Salary salary = selectSalary(employeeNumber);
+		if (salary == null) {
+			throw new Exception("该员工没有工资表!");
+		}
+		salaryMapper.deleteByPrimaryKey(employeeNumber);
+	}
+
 }

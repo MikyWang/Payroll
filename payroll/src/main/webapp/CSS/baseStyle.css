@@ -4,3 +4,8 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+
+.form-inline {
+    display: inline-block !important;
+    width: auto !important;
+}

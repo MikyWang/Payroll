@@ -11,6 +11,8 @@ public interface AdminMapper {
 
     Admin selectByPrimaryKey(Long adminNumber);
 
+    Admin selectByEmployeeNumber(Long employNumber);
+    
     int updateByPrimaryKeySelective(Admin record);
 
     int updateByPrimaryKey(Admin record);
