@@ -8,20 +8,16 @@ var modalModel = {
   secondButton: ko.observable(''),
   firstClick: buttonClick,
   secondClick: buttonClick,
-  callback: function () {},
+  callback: function () { },
   thisArgs: ko.observable(),
-  addEmployeeModel: ko.observableArray([
-    {
-      employeeName: ko.observable('sad'),
-    }
-  ]),
 }
 
-function buttonClick () {
+function buttonClick() {
   modalModel.callback(this.thisArgs())
 }
 
-function oneButtonModal (title, body, buttonName, buttonFunc, thisArgs) {
+function oneButtonModal(title, body, buttonName, buttonFunc, thisArgs) {
+  clearModal()
   modalModel.title(title)
   modalModel.body(body)
   modalModel.firstButton(buttonName)
@@ -31,17 +27,19 @@ function oneButtonModal (title, body, buttonName, buttonFunc, thisArgs) {
   $('#myModal').modal('show')
 }
 
-function initModal (title, body) {
+function initModal(title, body) {
+  clearModal()
   modalModel.title(title)
   modalModel.body(body)
   $('#myModal').modal('show')
 }
 
-function resetButton () {
+function resetButton() {
   modalModel.disableClose(false)
 }
 
-function initProcessBar (title) {
+function initProcessBar(title) {
+  clearModal()
   $.ajax({
     url: 'processbar',
     success: function (response) {
@@ -58,19 +56,18 @@ function initProcessBar (title) {
   })
 }
 
-function clearModal () {
+function clearModal() {
   modalModel.title('')
   modalModel.body('')
   modalModel.firstButton('')
   modalModel.secondButton('')
   modalModel.callFirst(false)
   modalModel.callSecond(false)
-  modalModel.callback = function () {}
+  modalModel.callback = function () { }
   modalModel.disableClose(false)
 }
 
-function closeProcessbar () {
-  $('#myModal').modal('hide')
+function closeProcessbar() {
   clearModal()
 }
 

@@ -15,13 +15,17 @@
                     <h1>管理员界面</h1>
                     <p>管理员能够对员工进行编辑,查看,删除,添加操作.</p>
                     <p>
-                        <a class="btn btn-primary btn-lg" href="#department">立即开始</a>
+                        <a class="btn btn-primary btn-lg" href="#employeeManage">管理员工</a>
+                        <a class="btn btn-primary btn-lg" href="#department">添加部门</a>
+                        <a id="raisesHeader" class="btn btn-primary btn-lg" href="javascript:void(0);">
+                                请求信息 &nbsp;
+                        </a>
                     </p>
                 </div>
             </div>
-            <div id="department" class="container" data-model="adminModel">
+            <div id="employeeManage" class="container" data-model="adminModel">
                 <div class="row">
-                    <div class=" col-sm-offset-2 col-sm-8 col-xs-12">
+                    <div class=" col-sm-offset-1 col-sm-10 col-xs-12">
                         <div class="panel panel-default ">
                             <div class="panel-heading col-xs-12">
                                 <button style="margin-top : -5px" class="btn btn-default" data-toggle="tooltip" title="查看部门信息" data-bind="click: departmentDetail , disabled : !isSelectDepartment()">
@@ -30,7 +34,6 @@
                                 <select class="form-control form-inline" data-bind="options: departments , value : selectDepartment, optionsCaption : '选择部门'"></select>
                                 <div class=" pull-right">
                                     <a href="javascript:void(0);" data-toggle="tooltip" title="添加员工" data-bind="click: addEmployee"> <span class="glyphicon glyphicon-plus"></span>&nbsp;</a>
-                                    <a href="javascript:void(0);" data-toggle="tooltip" title="保存修改"> <span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;</a>
                                     <a href="javascript:void(0);" data-toggle="tooltip" title="缩小" data-bind="click: departmentToggle , visible : ownDepartShow"> <span class="glyphicon glyphicon-resize-small"></span></a>
                                     <a href="javascript:void(0);" data-toggle="tooltip" title="放大" data-bind="click: departmentToggle , visible : !ownDepartShow()"> <span class="glyphicon glyphicon-resize-full"></span></a>
                                 </div>
@@ -45,6 +48,9 @@
                                             </th>
                                             <th>
                                                 员工姓名
+                                            </th>
+                                            <th>
+                                                学历
                                             </th>
                                             <th>
                                                 性别
@@ -70,15 +76,20 @@
                                                 <span class="label " data-bind="html: power, css : powerStyle"></span>
                                             </td>
                                             <td>
+
+                                                <input type="text" class="form-control form-inline" data-bind="value: education, valueUpdate : 'afterkeydown'">
+
+                                            </td>
+                                            <td>
                                                 <span data-bind="html: sex"></span>
                                             </td>
                                             <td class="dropdown">
-                                                <select id="inputDepartment" class="form-control" data-bind="options: $root.departments ,value : departmentName"></select>
+                                                <select id="inputDepartment" class="form-control" data-bind="options: $root.departments ,value : departmentName ,disabled : isAdmin"></select>
                                             </td>
                                             <td class="dropdown ">
                                                 <a href="javascript:void(0);" class="dropdown-toggle " id="moneyDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     <span class="text-warning">￥</span>
-                                                    <span class="text-danger " data-bind="html: actMoney"></span>
+                                                    <span class="text-danger " data-bind="text: actMoney"></span>
                                                     <span class="caret"></span>
                                                 </a>
                                                 <table class="dropdown-menu  table table-hover table-striped" style="min-width:200px" aria-labelledby="moneyDrop">
@@ -142,6 +153,7 @@
                                                 </table>
                                             </td>
                                             <td>
+                                                <a href="javascript:void(0);" data-toggle="tooltip" title="保存修改" data-bind="click: saveEmployee"> <span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;</a>
                                                 <a href="javascript:void(0);" data-toggle="tooltip" title="删除" data-bind="visible: !isAdmin(), click : deleteEmployee"> <span class="glyphicon glyphicon-remove"></span>&nbsp;</a>
                                                 <a href="javascript:void(0);" data-bind="visible: !isAdmin() ,click :togglePower">
                                                     <span class="glyphicon glyphicon-arrow-up text-success"></span>
@@ -157,6 +169,39 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div id="department" class="container" data-model="addDepartmentModel">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-offset-1  col-sm-4">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">添加部门</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label for="inputNumber" class="col-sm-4 control-label">部门名称:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control " required="required" data-bind="value: departmentName,valueUpdate:'afterkeydown'">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputManager" class="col-sm-4 control-label">部门管理人ID:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" placeholder="可留空" class="form-control" data-bind="value: departmentManager ,valueUpdate:'afterkeydown'">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-4 col-sm-4">
+                                            <button type="button" class="btn btn-primary" data-bind="click: createDepartment">创建部门</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
     </body>
 

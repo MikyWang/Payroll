@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lejiyu.payroll.Dao.RequireRaiseMapper" >
+  <resultMap id="BaseResultMap" type="com.lejiyu.payroll.Entity.RequireRaise" >
+    <id column="form_id" property="formId" jdbcType="INTEGER" />
+    <result column="requirer_id" property="requirerId" jdbcType="BIGINT" />
+    <result column="manager_id" property="managerId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="require_money" property="requireMoney" jdbcType="DECIMAL" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    form_id, requirer_id, manager_id, status, require_money, content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from require_raise
+    where form_id = #{formId,jdbcType=INTEGER}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from require_raise order by form_id DESC
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from require_raise
+    where form_id = #{formId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lejiyu.payroll.Entity.RequireRaise" >
+    insert into require_raise (form_id, requirer_id, manager_id, 
+      status, require_money, content
+      )
+    values (#{formId,jdbcType=INTEGER}, #{requirerId,jdbcType=BIGINT}, #{managerId,jdbcType=BIGINT}, 
+      #{status,jdbcType=VARCHAR}, #{requireMoney,jdbcType=DECIMAL}, #{content,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lejiyu.payroll.Entity.RequireRaise" >
+    insert into require_raise
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="formId != null" >
+        form_id,
+      </if>
+      <if test="requirerId != null" >
+        requirer_id,
+      </if>
+      <if test="managerId != null" >
+        manager_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="requireMoney != null" >
+        require_money,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="formId != null" >
+        #{formId,jdbcType=INTEGER},
+      </if>
+      <if test="requirerId != null" >
+        #{requirerId,jdbcType=BIGINT},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="requireMoney != null" >
+        #{requireMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lejiyu.payroll.Entity.RequireRaise" >
+    update require_raise
+    <set >
+      <if test="requirerId != null" >
+        requirer_id = #{requirerId,jdbcType=BIGINT},
+      </if>
+      <if test="managerId != null" >
+        manager_id = #{managerId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="requireMoney != null" >
+        require_money = #{requireMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where form_id = #{formId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lejiyu.payroll.Entity.RequireRaise" >
+    update require_raise
+    set requirer_id = #{requirerId,jdbcType=BIGINT},
+      manager_id = #{managerId,jdbcType=BIGINT},
+      status = #{status,jdbcType=VARCHAR},
+      require_money = #{requireMoney,jdbcType=DECIMAL},
+      content = #{content,jdbcType=VARCHAR}
+    where form_id = #{formId,jdbcType=INTEGER}
+  </update>
+</mapper>

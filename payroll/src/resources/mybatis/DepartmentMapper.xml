@@ -16,11 +16,22 @@
     from department_table
     where department_number = #{departmentNumber,jdbcType=VARCHAR}
   </select>
+    <select id="selectByDepartmentName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from department_table
+    where department_name = #{departmentName,jdbcType=VARCHAR}
+  </select>
   <select id="selectByEmployeeNumber" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from department_table
     where department_manager = #{departmentManager,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from department_table
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from department_table

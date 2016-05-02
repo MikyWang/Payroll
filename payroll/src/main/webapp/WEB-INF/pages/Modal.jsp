@@ -13,7 +13,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bind="visible: callFirst ,html : firstButton , click : firstClick"></button>
                     <button type="button" class="btn btn-default" data-bind="visible: callSecond ,html : secondButton , click : secondClick">关闭</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disabled: disableClose">关闭</button>
+                    <button type="button" id="close" class="btn btn-default" data-dismiss="modal" data-bind="disabled: disableClose">关闭</button>
                 </div>
             </div>
         </div>

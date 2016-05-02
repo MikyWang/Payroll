@@ -11,6 +11,15 @@ window.LoginType = {
   employee: '员工'
 }
 
+function calculateSalary (expMoney, overtimeSalary, fine) {
+  return parseFloat(expMoney) + parseFloat(overtimeSalary) - parseFloat(fine)
+}
+
+var RaiseStatus = {
+  Create: '未读',
+  Complete: '已读'
+}
+
 ko.bindingHandlers.showVisible = {
   init: function (element, valueAccessor) {
     var value = ko.utils.unwrapObservable(valueAccessor())

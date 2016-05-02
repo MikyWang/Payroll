@@ -1,5 +1,7 @@
 package com.lejiyu.payroll.Dao;
 
+import java.util.List;
+
 import com.lejiyu.payroll.Entity.Department;
 
 public interface DepartmentMapper {
@@ -13,7 +15,11 @@ public interface DepartmentMapper {
 
 	Department selectByEmployeeNumber(long employeeNumber);
 
+	Department selectByDepartmentName(String departmentName);
+
 	int updateByPrimaryKeySelective(Department record);
 
 	int updateByPrimaryKey(Department record);
+
+	List<Department> selectAll();
 }

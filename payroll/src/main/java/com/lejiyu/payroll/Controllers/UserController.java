@@ -1,5 +1,6 @@
 package com.lejiyu.payroll.Controllers;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lejiyu.payroll.Common.LoginType;
-import com.lejiyu.payroll.Entity.Admin;
 import com.lejiyu.payroll.Entity.Employee;
+import com.lejiyu.payroll.Entity.RequireRaise;
+import com.lejiyu.payroll.Entity.Salary;
 import com.lejiyu.payroll.Entity.User;
 import com.lejiyu.payroll.Services.SalaryService;
 import com.lejiyu.payroll.Services.UserService;
@@ -66,6 +68,17 @@ public class UserController extends BaseController {
 		return "index";
 	}
 
+	@RequestMapping(value = "saveEmployee", method = RequestMethod.POST)
+	public void saveEmployee(@RequestBody Map<String, Object> map, HttpServletResponse response) throws Exception {
+		try {
+			userService.saveEmployee(map);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+
+	}
+
 	@RequestMapping(value = "getUser")
 	@ResponseBody
 	public Map<String, Object> getUser(HttpServletResponse response) throws Exception {
@@ -81,6 +94,19 @@ public class UserController extends BaseController {
 			map.put("account", user);
 		}
 		return map;
+	}
+
+	@RequestMapping(value = "employeeAppend", method = RequestMethod.POST)
+	@ResponseBody
+	public User addEmployee(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		User user = null;
+		try {
+			user = userService.addEmployee(request);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+		return user;
 	}
 
 	@RequestMapping(value = "deleteEmployee", method = RequestMethod.POST)
@@ -127,4 +153,76 @@ public class UserController extends BaseController {
 		return empinformation;
 	}
 
+	@RequestMapping(value = "getSalary", method = RequestMethod.POST)
+	@ResponseBody
+	public Salary getSalary(Long employNumber, HttpServletResponse response) throws Exception {
+		try {
+			return salaryService.selectSalary(employNumber);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "saveEmployeeOne", method = RequestMethod.POST)
+	public void saveEmployeeOne(@RequestBody Employee employee, HttpServletResponse response) throws Exception {
+		try {
+			userService.saveEmployeeOne(employee);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "saveSalary", method = RequestMethod.POST)
+	public void saveSalary(@RequestBody Salary salary, HttpServletResponse response) throws Exception {
+		try {
+			salaryService.updateSalary(salary);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "requireRaise", method = RequestMethod.POST)
+	public void requireRaise(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			userService.requireRaise(request, session);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "getRaises")
+	@ResponseBody
+	public List<RequireRaise> getRaises(HttpServletResponse response) throws Exception {
+		try {
+			return userService.getRaises();
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "getEmployee", method = RequestMethod.POST)
+	@ResponseBody
+	public Employee getEmployee(HttpServletResponse response) throws Exception {
+		try {
+			Employee employee = null;
+			if (session.getAttribute("user") != null) {
+				employee = (Employee) session.getAttribute("user");
+			}
+			if (employee == null) {
+				throw new Exception("用户没有登陆");
+			}
+			return userService.selectEmployee(employee.getEmployNumber());
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+		return null;
+	}
 }

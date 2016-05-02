@@ -19,6 +19,13 @@
     where employ_number = #{employNumber,jdbcType=BIGINT}
   </select>
   
+   <select id="selectByEmployeeName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_table
+    where employ_Name = #{employName,jdbcType=VARCHAR}
+  </select>
+  
    <select id="selectAll" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
