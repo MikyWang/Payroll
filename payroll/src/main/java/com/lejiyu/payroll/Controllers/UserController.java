@@ -52,6 +52,8 @@ public class UserController extends BaseController {
 				url = "admin";
 			} else if (map.get("power").toString().equals(LoginType.employee)) {
 				url = "employee";
+			} else if (map.get("power").toString().equals(LoginType.hr)) {
+				url = "HR";
 			}
 		} catch (Exception e) {
 			response.setStatus(404);
@@ -195,9 +197,31 @@ public class UserController extends BaseController {
 		}
 	}
 
+	@RequestMapping(value = "getEmployeeSalarys")
+	@ResponseBody
+	public List<Map<String, Object>> getEmployeeSalarys(HttpServletResponse response) throws Exception {
+		try {
+			return salaryService.getEmployeeSalarys();
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "updateEmployeeSalary", method = RequestMethod.POST)
+	public void updateEmployeeSalary(@RequestBody Map<String, Object> map, HttpServletResponse response) throws Exception {
+		try {
+			salaryService.updateEmployeeSalary(map);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
+	}
+
 	@RequestMapping(value = "getRaises")
 	@ResponseBody
-	public List<RequireRaise> getRaises(HttpServletResponse response) throws Exception {
+	public List<Map<String, Object>> getRaises(HttpServletResponse response) throws Exception {
 		try {
 			return userService.getRaises();
 		} catch (Exception e) {
@@ -205,6 +229,16 @@ public class UserController extends BaseController {
 			response.getWriter().write(e.getMessage());
 		}
 		return null;
+	}
+
+	@RequestMapping(value = "updateRaise", method = RequestMethod.POST)
+	public void updateRaise(@RequestBody RequireRaise requireRaise, HttpServletResponse response) throws Exception {
+		try {
+			userService.updateRaise(requireRaise);
+		} catch (Exception e) {
+			response.setStatus(404);
+			response.getWriter().write(e.getMessage());
+		}
 	}
 
 	@RequestMapping(value = "getEmployee", method = RequestMethod.POST)

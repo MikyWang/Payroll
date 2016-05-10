@@ -3,6 +3,7 @@ package com.lejiyu.payroll.Controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.lejiyu.payroll.Common.LoginType;
+import com.lejiyu.payroll.Entity.Employee;
 
 @Controller
 public class PageController extends BaseController {
@@ -52,6 +53,16 @@ public class PageController extends BaseController {
 	@RequestMapping(value = "showRaises")
 	public String showRaises() {
 		return "showRaises";
+	}
+
+	@RequestMapping(value = "HR")
+	public String HR() {
+		String actUrl = "employee";
+		String power = session.getAttribute("power").toString();
+		if (power.equals(LoginType.hr) && session.getAttribute("user") != null) {
+			actUrl = "HR";
+		}
+		return verifySign(actUrl);
 	}
 
 	@RequestMapping(value = "requestSalary")

@@ -1,23 +1,26 @@
-function isNullOrEmpty (object) {
+function isNullOrEmpty(object) {
   return object == null || object == '' || object == undefined
 }
 
-function isEmptyArray (array) {
+function isEmptyArray(array) {
   return isNullOrEmpty(array) || array.length == 0
 }
 
 window.LoginType = {
   admin: '管理员',
-  employee: '员工'
+  employee: '员工',
+  hr: '人事部管理员'
 }
 
-function calculateSalary (expMoney, overtimeSalary, fine) {
+
+function calculateSalary(expMoney, overtimeSalary, fine) {
   return parseFloat(expMoney) + parseFloat(overtimeSalary) - parseFloat(fine)
 }
 
 var RaiseStatus = {
   Create: '未读',
-  Complete: '已读'
+  Accept: '通过',
+  Cancel:'未通过'
 }
 
 ko.bindingHandlers.showVisible = {

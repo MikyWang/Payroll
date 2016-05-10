@@ -31,12 +31,12 @@
         </div>
         <div class="form-group">
 
-            <label for="input-Salary" class="col-sm-2 control-label">基本工资:</label>
+            <label for="input-Salary" class="col-sm-2 control-label">期望工资:</label>
 
             <div class="col-sm-10">
                 <div class="input-group">
                     <div class="input-group-addon">￥</div>
-                    <input type="text" class="form-control" name="expectSalary" placeholder="基本工资">
+                    <input type="text" class="form-control" name="expectSalary" placeholder="期望工资">
                 </div>
             </div>
         </div>

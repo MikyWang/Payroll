@@ -16,10 +16,7 @@
                     <p>管理员能够对员工进行编辑,查看,删除,添加操作.</p>
                     <p>
                         <a class="btn btn-primary btn-lg" href="#employeeManage">管理员工</a>
-                        <a class="btn btn-primary btn-lg" href="#department">添加部门</a>
-                        <a id="raisesHeader" class="btn btn-primary btn-lg" href="javascript:void(0);">
-                                请求信息 &nbsp;
-                        </a>
+                        <a id="showDepartment" class="btn btn-primary btn-lg">添加部门</a>
                     </p>
                 </div>
             </div>
@@ -101,7 +98,7 @@
                                                             <td>
                                                                 <div class="input-group">
                                                                     <div class="input-group-addon">￥</div>
-                                                                    <input type="text text-danger" class="form-control" id="exampleInputAmount" placeholder="Amount" data-bind="value: expMoney, valueUpdate:'afterkeydown'">
+                                                                    <input type="text text-danger" class="form-control" id="exampleInputAmount" placeholder="Amount" data-bind="value: expMoney, valueUpdate:'afterkeydown'" disabled>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -112,7 +109,7 @@
                                                             <td>
                                                                 <div class="input-group">
                                                                     <div class="input-group-addon">￥</div>
-                                                                    <input type="text text-danger" class="form-control" placeholder="罚款" data-bind="value: fine, valueUpdate:'afterkeydown'">
+                                                                    <input type="text text-danger" class="form-control" placeholder="罚款" data-bind="value: fine, valueUpdate:'afterkeydown'" disabled>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -134,7 +131,7 @@
                                                             <td>
                                                                 <div class="input-group">
                                                                     <div class="input-group-addon">￥</div>
-                                                                    <input type="text text-danger" class="form-control" placeholder="加班工资" data-bind="value: overtimeSalary, valueUpdate:'afterkeydown'">
+                                                                    <input type="text text-danger" class="form-control" placeholder="加班工资" data-bind="value: overtimeSalary, valueUpdate:'afterkeydown'" disabled>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -171,7 +168,7 @@
                 </div>
             </div>
             <div id="department" class="container" data-model="addDepartmentModel">
-                <div class="row">
+                <div class="row" data-bind="showVisible : departmentVisible">
                     <div class="col-xs-12 col-sm-offset-1  col-sm-4">
                         <div class="panel panel-success">
                             <div class="panel-heading">
@@ -189,6 +186,26 @@
                                         <label for="inputManager" class="col-sm-4 control-label">部门管理人ID:</label>
                                         <div class="col-sm-8">
                                             <input type="text" placeholder="可留空" class="form-control" data-bind="value: departmentManager ,valueUpdate:'afterkeydown'">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputManager" class="col-sm-4 control-label">部门基本工资:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" data-bind="value: departmentBaseSalary ,valueUpdate:'afterkeydown'">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputManager" class="col-sm-4 control-label">工龄基本工资:</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group-addon">￥</div>
+                                            <input type="text text-danger" class="form-control" data-bind="value: seniorityBaseSalary, valueUpdate:'afterkeydown'" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputManager" class="col-sm-4 control-label">级别基本工资:</label>
+                                        <div class="col-sm-8">
+                                           <div class="input-group-addon">￥</div>
+                                            <input type="text text-danger" class="form-control" data-bind="value: levelBaseSalary, valueUpdate:'afterkeydown'" >
                                         </div>
                                     </div>
                                     <div class="form-group">

@@ -9,7 +9,7 @@
     </head>
 
     <body>
-          <%@ include file="navbar.jsp" %>
+        <%@ include file="navbar.jsp" %>
             <div class="container" data-model="loginModel">
 
                 <div class="row">
@@ -30,8 +30,8 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="radio col-sm-offset-4 col-sm-8" data-bind="foreach: Power">
-                                            <label class="col-sm-offset-1">
-                                                <input type="radio"  name="power" id="inputpower" data-bind="checked: selectPower , value: value, valueUpdate:'afterkeydown'">
+                                            <label>
+                                                <input type="radio"  name="power" id="inputpower" data-bind="checked:$root.selectPower , value: value, valueUpdate:'afterkeydown'">
                                                 <span data-bind="html: displayName"></span>
                                             </label>
                                         </div>

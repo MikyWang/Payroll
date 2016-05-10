@@ -1,6 +1,5 @@
 package com.lejiyu.payroll.Controllers;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +46,9 @@ public class DepartmentController extends BaseController {
 	}
 
 	@RequestMapping(value = "createDepartment", method = RequestMethod.POST)
-	public void createDepartment(@RequestBody Department department, HttpServletResponse response) throws Exception {
+	public void createDepartment(@RequestBody Map<String, Object> map, HttpServletResponse response) throws Exception {
 		try {
-			userService.createDepartment(department);
+			userService.createDepartment(map);
 		} catch (Exception e) {
 			response.setStatus(404);
 			response.getWriter().write(e.getMessage());

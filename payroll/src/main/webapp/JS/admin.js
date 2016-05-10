@@ -8,22 +8,6 @@ var adminModel = {
   raises: []
 }
 
-function showRaises() {
-  $.ajax({
-    url: 'showRaises',
-    success: function (response) {
-      initModal('请求信息', response)
-      adminModel.raises.forEach(function (raise) {
-        var html = ' <div class="panel panel-primary"><div class="panel-heading"><h3 class="panel-title">'+raise.formId+'</h3> </div><div class="panel-body"> <form class="form-horizontal" role="form"> <fieldset disabled><div class="form-group"><label for="input-id" class="col-sm-4 control-label">申请加薪:</label><div class="col-sm-8"><div class="input-group"><div class="input-group-addon">￥</div><input type="text" value="'+raise.requireMoney+'"  class="form-control"> </div></div></div><div class="form-group"><label for="input-id" class="col-sm-4 control-label">加薪理由:</label><div class="col-sm-8"><input type="text" value="'+raise.content+'"  class="form-control"></div></div>   </fieldset></form> </div></div>'
-        $('#raises').append(html)
-      })
-    },
-    error: function (response) {
-      initModal('读取失败', response.responseText)
-    }
-  })
-}
-
 adminModel.addEmployee = function () {
   clearModal()
   $.ajax({
@@ -92,20 +76,21 @@ adminModel.isSelectDepartment = ko.computed(function (param) {
 
 var addDepartmentModel = {
   departmentName: ko.observable(''),
-  departmentManager: ko.observable('')
+  departmentManager: ko.observable(''),
+  departmentVisible: ko.observable(false),
+  departmentBaseSalary: ko.observable(''),
+  seniorityBaseSalary: ko.observable(''),
+  levelBaseSalary: ko.observable('')
 }
 
 addDepartmentModel.createDepartment = function () {
-  var department = {
-    departmentName: addDepartmentModel.departmentName(),
-    departmentManager: addDepartmentModel.departmentManager()
-  }
+  var department = ko.toJSON(addDepartmentModel);
   initProcessBar('正在添加')
   $.ajax({
     type: 'POST',
     contentType: 'application/json; charset=utf-8',
     url: 'createDepartment',
-    data: JSON.stringify(department),
+    data: department,
     success: function (response) {
       closeProcessbar()
       initModal('创建成功', '部门<span class="text-primary">' + department.departmentName + '</span>成功创建!')
@@ -126,19 +111,6 @@ function getDepartments() {
         adminModel.departments.push(department.departmentName)
         adminModel.departmentsNumber.push(department.departmentNumber)
       })
-    }
-  })
-}
-
-function getRaise() {
-  initProcessBar()
-  $.ajax({
-    url: 'getRaises',
-    success: function (response) {
-      adminModel.raises = response
-      $('#raisesHeader').append('<span class="badge">' + adminModel.raises.length + '</span>')
-      closeProcessbar()
-      $('#close').click()
     }
   })
 }
@@ -275,8 +247,9 @@ function getEmployees() {
 $(document).ready(function () {
   getDepartments()
   getEmployees()
-  getRaise()
-  $('#raisesHeader').bind('click', showRaises)
+  $('#showDepartment').bind('click', function () {
+    addDepartmentModel.departmentVisible(true);
+  })
 })
 ko.attach('adminModel', adminModel)
 ko.attach('addDepartmentModel', addDepartmentModel)

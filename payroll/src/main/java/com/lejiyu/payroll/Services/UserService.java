@@ -10,21 +10,25 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.reflection.wrapper.BaseWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lejiyu.payroll.Common.LoginType;
 import com.lejiyu.payroll.Common.RaiseStatus;
+import com.lejiyu.payroll.Common.SalaryHelper;
 import com.lejiyu.payroll.Dao.AdminMapper;
+import com.lejiyu.payroll.Dao.DepartmentBaseSalaryMapper;
 import com.lejiyu.payroll.Dao.DepartmentMapper;
 import com.lejiyu.payroll.Dao.EmployeeMapper;
+import com.lejiyu.payroll.Dao.EmployeeWorkMapper;
 import com.lejiyu.payroll.Dao.RequireRaiseMapper;
 import com.lejiyu.payroll.Dao.SalaryMapper;
 import com.lejiyu.payroll.Dao.UserMapper;
 import com.lejiyu.payroll.Entity.Admin;
 import com.lejiyu.payroll.Entity.Department;
+import com.lejiyu.payroll.Entity.DepartmentBaseSalary;
 import com.lejiyu.payroll.Entity.Employee;
+import com.lejiyu.payroll.Entity.EmployeeWork;
 import com.lejiyu.payroll.Entity.RequireRaise;
 import com.lejiyu.payroll.Entity.Salary;
 import com.lejiyu.payroll.Entity.User;
@@ -50,6 +54,12 @@ public class UserService {
 	@Resource
 	DepartmentMapper departmentMapper;
 
+	@Resource
+	DepartmentBaseSalaryMapper departmentBaseSalaryMapper;
+
+	@Resource
+	EmployeeWorkMapper employeeWorkMapper;
+
 	public Map<String, Object> selectUser(User user) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		User selectUser = userMapper.selectByPrimaryKey(user.getUserId());
@@ -63,7 +73,7 @@ public class UserService {
 			throw new Exception("该用户不是" + user.getPower());
 		}
 		map.put("power", selectUser.getPower());
-		if (selectUser.getPower().equals(LoginType.admin)) {
+		if (selectUser.getPower().equals(LoginType.admin) || selectUser.getPower().equals(LoginType.hr)) {
 			Admin admin = adminMapper.selectByPrimaryKey(selectUser.getUserId());
 			if (admin == null) {
 				throw new Exception("该用户不是管理员");
@@ -103,7 +113,12 @@ public class UserService {
 		if (user == null) {
 			throw new Exception("没有该用户");
 		}
+		EmployeeWork employeeWork = employeeWorkMapper.selectByPrimaryKey(employeeNumber);
+		if (employeeWork == null) {
+			throw new Exception("这个员工没有工龄");
+		}
 		employeeMapper.deleteByPrimaryKey(employeeNumber);
+		employeeWorkMapper.deleteByPrimaryKey(employeeNumber);
 		department.setDepartmentSize(department.getDepartmentSize() - 1);
 		departmentMapper.updateByPrimaryKeySelective(department);
 		userMapper.deleteByPrimaryKey(employeeNumber);
@@ -128,18 +143,25 @@ public class UserService {
 			throw new Exception("添加失败!");
 		}
 		Salary salary = new Salary();
-
 		salary.setEmployNumber(employees.get(0).getEmployNumber());
-		BigDecimal expectSalary = BigDecimal.valueOf(Double.valueOf(request.getParameter("expectSalary")));
-		if (expectSalary == null) {
-			throw new Exception("请输入数字");
+		EmployeeWork employeeWork = new EmployeeWork();
+		employeeWork.setEmployeeNumber(employees.get(0).getEmployNumber());
+		DepartmentBaseSalary departmentBaseSalary = selectDepartmentBaseSalary(department.getDepartmentNumber());
+		if (departmentBaseSalary==null) {
+			throw new Exception("该部门没有配置基础工资");
 		}
+		BigDecimal expectSalary = SalaryHelper.CalculateExpectSalary(
+				BigDecimal.valueOf(departmentBaseSalary.getDepartmentBaseSalary()),
+				BigDecimal.valueOf(departmentBaseSalary.getSeniorityBaseSalary()),
+				BigDecimal.valueOf(departmentBaseSalary.getLevelBaseSalary()), 1, 1);
 		salary.setExpectSalary(expectSalary);
-
+		BigDecimal actuallySalary = SalaryHelper.CalculateActuallySalary(salary);
+		salary.setActuallySalary(actuallySalary);
 		User user = new User();
 		user.setUserId(employees.get(0).getEmployNumber());
 		user.setPassword("123456");
 		user.setPower(LoginType.employee);
+		employeeWorkMapper.insertSelective(employeeWork);
 		departmentMapper.updateByPrimaryKey(department);
 		salaryMapper.insertSelective(salary);
 		userMapper.insertSelective(user);
@@ -276,7 +298,7 @@ public class UserService {
 		salary.setOfficeDay((int) map.get("officeDay"));
 		salary.setOvertime((int) map.get("overtime"));
 		salary.setOvertimeSalary(BigDecimal.valueOf(Float.valueOf(map.get("overtimeSalary").toString())));
-		salary.setActuallySalary(salary.getExpectSalary().add(salary.getOvertimeSalary()).subtract(salary.getFine()));
+		salary.setActuallySalary(SalaryHelper.CalculateActuallySalary(salary));
 		salaryMapper.updateByPrimaryKeySelective(salary);
 	}
 
@@ -289,17 +311,19 @@ public class UserService {
 	}
 
 	@Transactional
-	public void createDepartment(Department department) throws Exception {
-		Department departmentOld = departmentMapper.selectByDepartmentName(department.getDepartmentName());
+	public void createDepartment(Map<String, Object> map) throws Exception {
+		Department department=new Department();
+		department.setDepartmentName(map.get("departmentName").toString());
+		Department departmentOld = departmentMapper.selectByDepartmentName(map.get("departmentName").toString());
 		if (departmentOld != null) {
 			throw new Exception("该部门已存在！");
 		}
-		if (department.getDepartmentManager() != null) {
-			Admin admin = adminMapper.selectByEmployeeNumber(department.getDepartmentManager());
+		if (map.get("departmentManager") != null) {
+			Admin admin = adminMapper.selectByEmployeeNumber(Long.valueOf(map.get("departmentManager").toString()));
 			if (admin != null) {
 				throw new Exception("一个管理员最多只能管理一个部门");
 			}
-			Employee employee = employeeMapper.selectByPrimaryKey(department.getDepartmentManager());
+			Employee employee = employeeMapper.selectByPrimaryKey(Long.valueOf(map.get("departmentManager").toString()));
 			if (employee == null) {
 				throw new Exception("没有此员工！");
 			}
@@ -324,6 +348,20 @@ public class UserService {
 			department.setDepartmentSize(0);
 			departmentMapper.insertSelective(department);
 		}
+		department=departmentMapper.selectByDepartmentName(department.getDepartmentName());
+		if (department==null) {
+			throw new Exception("创建失败");
+		}
+		DepartmentBaseSalary departmentBaseSalary=departmentBaseSalaryMapper.selectByPrimaryKey(department.getDepartmentNumber());
+		if (departmentBaseSalary!=null) {
+			throw new Exception("该部门基础工资已存在");
+		}
+		departmentBaseSalary=new DepartmentBaseSalary();
+		departmentBaseSalary.setDepartmentId(department.getDepartmentNumber());
+		departmentBaseSalary.setDepartmentBaseSalary(Long.valueOf(map.get("departmentBaseSalary").toString()));
+		departmentBaseSalary.setSeniorityBaseSalary(Long.valueOf(map.get("seniorityBaseSalary").toString()));
+		departmentBaseSalary.setLevelBaseSalary(Long.valueOf(map.get("levelBaseSalary").toString()));
+		departmentBaseSalaryMapper.insertSelective(departmentBaseSalary);
 	}
 
 	public Map<String, Object> getDepartmentByName(String departmentName) throws Exception {
@@ -355,7 +393,7 @@ public class UserService {
 			throw new Exception("请先登录!");
 		}
 		Employee employee = (Employee) session.getAttribute("user");
-		Department department = departmentMapper.selectByEmployeeNumber(employee.getEmployNumber());
+		Department department = departmentMapper.selectByPrimaryKey(employee.getDepartmentNumber());
 		if (department == null) {
 			throw new Exception("未知部门!");
 		}
@@ -367,12 +405,53 @@ public class UserService {
 		requireRaiseMapper.insertSelective(raise);
 	}
 
-	public List<RequireRaise> getRaises() throws Exception {
+	public DepartmentBaseSalary selectDepartmentBaseSalary(String departmentId) throws Exception {
+		DepartmentBaseSalary departmentBaseSalary = departmentBaseSalaryMapper.selectByPrimaryKey(departmentId);
+		if (departmentBaseSalary == null) {
+			throw new Exception("没有该部门的基本工资表");
+		}
+		return departmentBaseSalary;
+
+	}
+
+	public List<Map<String, Object>> getRaises() throws Exception {
+		List<Map<String, Object>> raisesList = new ArrayList<Map<String, Object>>();
 		List<RequireRaise> raises = requireRaiseMapper.selectAll();
 		if (raises.isEmpty()) {
 			throw new Exception("没有信息!");
 		}
-		return raises;
+		for (RequireRaise requireRaise : raises) {
+			if (requireRaise.getStatus().equals(RaiseStatus.Create)) {
+				Employee employee = employeeMapper.selectByPrimaryKey(requireRaise.getRequirerId());
+				if (employee == null) {
+					throw new Exception("没有该员工");
+				}
+				Map<String, Object> map = new HashMap<>();
+				map.put("employee", employee);
+				map.put("raise", requireRaise);
+				raisesList.add(map);
+			}
+		}
+		return raisesList;
+	}
+
+	@Transactional
+	public void updateRaise(RequireRaise requireRaise) throws Exception {
+		RequireRaise raise = requireRaiseMapper.selectByPrimaryKey(requireRaise.getFormId());
+		if (raise == null) {
+			throw new Exception("没有这个加薪请求!");
+		}
+		Salary salary = salaryMapper.selectByPrimaryKey(requireRaise.getRequirerId());
+		if (salary == null) {
+			throw new Exception("没有该员工的工资信息");
+		}
+		requireRaiseMapper.updateByPrimaryKeySelective(requireRaise);
+		if (requireRaise.getStatus().equals(RaiseStatus.Accept)) {
+			salary.setOvertimeSalary(
+					salary.getOvertimeSalary().add(BigDecimal.valueOf(requireRaise.getRequireMoney())));
+			salary.setActuallySalary(SalaryHelper.CalculateActuallySalary(salary));
+			salaryMapper.updateByPrimaryKeySelective(salary);
+		}
 	}
 
 }

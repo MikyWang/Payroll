@@ -1,16 +1,18 @@
 var loginModel = {
     Power: ko.observableArray([{
         value: ko.observable("管理员"),
-        selectPower: ko.observable("员工"),
-        displayName: "管理员"
+        displayName: "管理员",
     }, {
             value: ko.observable("员工"),
-            selectPower: ko.observable("员工"),
             displayName: "员工"
+        }, {
+            value: ko.observable('人事部管理员'),
+            displayName: '人事部'
         }]),
     userId: ko.observable(),
     password: ko.observable(),
     autoLogin: ko.observable(false),
+    selectPower: ko.observable('员工')
 }
 
 loginModel.logindisable = ko.computed(function () {
@@ -25,7 +27,7 @@ loginModel.loginHandler = function () {
     var user = {
         userId: loginModel.userId(),
         password: loginModel.password(),
-        power: loginModel.Power()[0].selectPower()
+        power: loginModel.selectPower()
     };
 
     $.ajax({

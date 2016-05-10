@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lejiyu.payroll.Dao.DepartmentBaseSalaryMapper" >
+  <resultMap id="BaseResultMap" type="com.lejiyu.payroll.Entity.DepartmentBaseSalary" >
+    <id column="department_id" property="departmentId" jdbcType="VARCHAR" />
+    <result column="department_base_salary" property="departmentBaseSalary" jdbcType="DECIMAL" />
+    <result column="seniority_base_salary" property="seniorityBaseSalary" jdbcType="DECIMAL" />
+    <result column="level_base_salary" property="levelBaseSalary" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    department_id, department_base_salary, seniority_base_salary, level_base_salary
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from department_base_salary
+    where department_id = #{departmentId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from department_base_salary
+    where department_id = #{departmentId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.lejiyu.payroll.Entity.DepartmentBaseSalary" >
+    insert into department_base_salary (department_id, department_base_salary, 
+      seniority_base_salary, level_base_salary)
+    values (#{departmentId,jdbcType=VARCHAR}, #{departmentBaseSalary,jdbcType=DECIMAL}, 
+      #{seniorityBaseSalary,jdbcType=DECIMAL}, #{levelBaseSalary,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lejiyu.payroll.Entity.DepartmentBaseSalary" >
+    insert into department_base_salary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="departmentId != null" >
+        department_id,
+      </if>
+      <if test="departmentBaseSalary != null" >
+        department_base_salary,
+      </if>
+      <if test="seniorityBaseSalary != null" >
+        seniority_base_salary,
+      </if>
+      <if test="levelBaseSalary != null" >
+        level_base_salary,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentBaseSalary != null" >
+        #{departmentBaseSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="seniorityBaseSalary != null" >
+        #{seniorityBaseSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="levelBaseSalary != null" >
+        #{levelBaseSalary,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lejiyu.payroll.Entity.DepartmentBaseSalary" >
+    update department_base_salary
+    <set >
+      <if test="departmentBaseSalary != null" >
+        department_base_salary = #{departmentBaseSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="seniorityBaseSalary != null" >
+        seniority_base_salary = #{seniorityBaseSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="levelBaseSalary != null" >
+        level_base_salary = #{levelBaseSalary,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where department_id = #{departmentId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lejiyu.payroll.Entity.DepartmentBaseSalary" >
+    update department_base_salary
+    set department_base_salary = #{departmentBaseSalary,jdbcType=DECIMAL},
+      seniority_base_salary = #{seniorityBaseSalary,jdbcType=DECIMAL},
+      level_base_salary = #{levelBaseSalary,jdbcType=DECIMAL}
+    where department_id = #{departmentId,jdbcType=VARCHAR}
+  </update>
+</mapper>
