@@ -24,8 +24,32 @@ function EmployeeSalary(employNumber, employName, departmentBaseSalary, seniorit
             + parseFloat(this.senioritySalary())
             + parseFloat(this.levelSalary());
     }, this);
+
+    this.medical = ko.computed(function () {
+        return parseFloat(this.expectSalary() * 0.1).toFixed(2);
+    }, this);
+
+    this.endowment = ko.computed(function () {
+        return parseFloat(this.expectSalary() * 0.28).toFixed(2);
+    }, this);
+    this.unemployment = ko.computed(function () {
+        return parseFloat(this.expectSalary() * 0.03).toFixed(2);
+    }, this);
+    this.inductriaInjury = ko.computed(function () {
+        return parseFloat(this.expectSalary() * 0.01).toFixed(2);
+    }, this);
+    this.birth = ko.computed(function () {
+        return parseFloat(this.expectSalary() * 0.01).toFixed(2);
+    }, this);
+    this.accumulationFund = ko.computed(function () {
+        return parseFloat(this.expectSalary() * 0.14).toFixed(2);
+    }, this);
+    this.insurance = ko.computed(function () {
+        return parseFloat(this.medical()) + parseFloat(this.endowment()) + parseFloat(this.unemployment())
+            + parseFloat(this.inductriaInjury()) + parseFloat(this.birth()) + parseFloat(this.accumulationFund());
+    }, this);
     this.actuallySalary = ko.computed(function () {
-        return parseFloat(this.expectSalary()) + parseFloat(this.overtimeSalary()) - parseFloat(this.fine());
+        return parseFloat(this.expectSalary()) * 0.82 + parseFloat(this.overtimeSalary()) - parseFloat(this.fine());
     }, this);
 
     this.saveSalary = function () {

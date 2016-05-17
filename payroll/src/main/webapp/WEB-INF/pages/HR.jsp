@@ -49,6 +49,9 @@
                                                 罚款
                                             </th>
                                             <th>
+                                                五险一金
+                                            </th>
+                                            <th>
                                                 实际工资
                                             </th>
                                             <th>
@@ -141,6 +144,83 @@
                                                     <div class="input-group-addon">￥</div>
                                                     <input type="text text-danger" class="form-control" id="exampleInputAmount" placeholder="fine" data-bind="value: fine, valueUpdate:'afterkeydown'">
                                                 </div>
+                                            </td>
+                                            <td class="dropdown">
+                                                <a href="javascript:void(0);" class="dropdown-toggle " id="insuranceDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <span class="text-warning">￥</span>
+                                                    <span class="text-danger " data-bind="text: insurance"></span>
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <table class="dropdown-menu  table table-hover table-striped" style="min-width:200px" aria-labelledby="insuranceDrop">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                医疗保险:
+                                                            </td>
+                                                            <td>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">￥</div>
+                                                                    <input type="text text-danger" class="form-control" placeholder="医疗保险" id="exampleInputAmount" placeholder="Amount" data-bind="value: medical, valueUpdate:'afterkeydown'" disabled>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                养老保险:
+                                                            </td>
+                                                            <td>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">￥</div>
+                                                                    <input type="text text-danger" class="form-control" placeholder="养老保险" data-bind="value: endowment, valueUpdate:'afterkeydown'" disabled>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                失业保险:
+                                                            </td>
+                                                            <td>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">￥</div>
+                                                                    <input type="text text-danger" class="form-control" placeholder="失业保险" data-bind="value: unemployment, valueUpdate:'afterkeydown'" disabled>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                工伤保险:
+                                                            </td>
+                                                            <td>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">￥</div>
+                                                                    <input type="text text-danger" class="form-control" placeholder="工伤保险" data-bind="value: inductriaInjury, valueUpdate:'afterkeydown'" disabled>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                生育保险:
+                                                            </td>
+                                                            <td>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">￥</div>
+                                                                    <input type="text text-danger" class="form-control" placeholder="生育保险" data-bind="value: birth, valueUpdate:'afterkeydown'" disabled>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                住房公积金:
+                                                            </td>
+                                                            <td>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">￥</div>
+                                                                    <input type="text text-danger" class="form-control" placeholder="住房公积金" data-bind="value: accumulationFund, valueUpdate:'afterkeydown'" disabled>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </td>
                                             <td>
                                                 <div class="input-group">

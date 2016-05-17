@@ -5,7 +5,23 @@ var adminModel = {
   departments: ko.observableArray([]),
   selectDepartment: ko.observable(''),
   departmentsNumber: ko.observableArray([]),
-  raises: []
+  raises: [],
+}
+
+adminModel.sumarySalary = ko.computed(calculateSumSalary, this);
+adminModel.avgSalary = ko.computed(calculateAvgSalary, this);
+function calculateSumSalary() {
+  var sumarySalary = 0.00;
+  if (adminModel.selectDepartEmployees && !isEmptyArray(adminModel.selectDepartEmployees())) {
+    adminModel.selectDepartEmployees().forEach(function (employee) {
+      sumarySalary = sumarySalary + parseFloat(employee.actMoney());
+    }, this)
+  }
+  return sumarySalary;
+}
+
+function calculateAvgSalary() {
+  return (parseFloat(adminModel.sumarySalary()) / adminModel.selectDepartEmployees().length).toFixed(2);
 }
 
 adminModel.addEmployee = function () {
@@ -14,7 +30,7 @@ adminModel.addEmployee = function () {
     url: 'addEmployee',
     success: function (response) {
       oneButtonModal('添加员工', response, '确定', function () {
-        var addEmployee = $('#employeeAppend').serialize()
+        var addEmployee = $('#employeeAppend').serialize();
         clearModal()
         initProcessBar('正在添加')
         $.ajax({
@@ -228,9 +244,7 @@ function getEmployees() {
           fine: ko.observable(element.salary.fine),
           overtime: ko.observable(element.salary.overtime),
           overtimeSalary: ko.observable(element.salary.overtimeSalary),
-          actMoney: ko.observable(parseFloat(element.salary.expectSalary)
-            + parseFloat(element.salary.overtimeSalary)
-            - parseFloat(element.salary.fine)),
+          actMoney: ko.observable(element.salary.actuallySalary),
           officeDay: ko.observable(element.salary.officeDay),
         })
       })

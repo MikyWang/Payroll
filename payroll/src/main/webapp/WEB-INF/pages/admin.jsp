@@ -163,6 +163,14 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="panel-footer" data-bind="showVisible: ownDepartShow">
+                                <h4><span class="text-primary">总工资</span>:&nbsp;
+                                <span class="text-danger">￥</span>&nbsp;
+                                <span data-bind="html : sumarySalary"></span>&nbsp;&nbsp;<span class="text-primary">平均工资</span>:&nbsp;
+                                <span class="text-danger">￥</span>&nbsp;
+                                <span data-bind="html : avgSalary"></span>
+                                </h4>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -198,14 +206,14 @@
                                         <label for="inputManager" class="col-sm-4 control-label">工龄基本工资:</label>
                                         <div class="col-sm-8">
                                             <div class="input-group-addon">￥</div>
-                                            <input type="text text-danger" class="form-control" data-bind="value: seniorityBaseSalary, valueUpdate:'afterkeydown'" >
+                                            <input type="text text-danger" class="form-control" data-bind="value: seniorityBaseSalary, valueUpdate:'afterkeydown'">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputManager" class="col-sm-4 control-label">级别基本工资:</label>
                                         <div class="col-sm-8">
-                                           <div class="input-group-addon">￥</div>
-                                            <input type="text text-danger" class="form-control" data-bind="value: levelBaseSalary, valueUpdate:'afterkeydown'" >
+                                            <div class="input-group-addon">￥</div>
+                                            <input type="text text-danger" class="form-control" data-bind="value: levelBaseSalary, valueUpdate:'afterkeydown'">
                                         </div>
                                     </div>
                                     <div class="form-group">

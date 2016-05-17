@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lejiyu.payroll.Dao.InsuranceMapper" >
+  <resultMap id="BaseResultMap" type="com.lejiyu.payroll.Entity.Insurance" >
+    <id column="employee_id" property="employeeId" jdbcType="BIGINT" />
+    <result column="medical" property="medical" jdbcType="DECIMAL" />
+    <result column="endowment" property="endowment" jdbcType="DECIMAL" />
+    <result column="unemployment" property="unemployment" jdbcType="DECIMAL" />
+    <result column="inductria_injury" property="inductriaInjury" jdbcType="DECIMAL" />
+    <result column="birth" property="birth" jdbcType="DECIMAL" />
+    <result column="accumulation_fund" property="accumulationFund" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    employee_id, medical, endowment, unemployment, inductria_injury, birth, accumulation_fund
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from insurance_table
+    where employee_id = #{employeeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from insurance_table
+    where employee_id = #{employeeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.lejiyu.payroll.Entity.Insurance" >
+    insert into insurance_table (employee_id, medical, endowment, 
+      unemployment, inductria_injury, birth, 
+      accumulation_fund)
+    values (#{employeeId,jdbcType=BIGINT}, #{medical,jdbcType=DECIMAL}, #{endowment,jdbcType=DECIMAL}, 
+      #{unemployment,jdbcType=DECIMAL}, #{inductriaInjury,jdbcType=DECIMAL}, #{birth,jdbcType=DECIMAL}, 
+      #{accumulationFund,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lejiyu.payroll.Entity.Insurance" >
+    insert into insurance_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="medical != null" >
+        medical,
+      </if>
+      <if test="endowment != null" >
+        endowment,
+      </if>
+      <if test="unemployment != null" >
+        unemployment,
+      </if>
+      <if test="inductriaInjury != null" >
+        inductria_injury,
+      </if>
+      <if test="birth != null" >
+        birth,
+      </if>
+      <if test="accumulationFund != null" >
+        accumulation_fund,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="medical != null" >
+        #{medical,jdbcType=DECIMAL},
+      </if>
+      <if test="endowment != null" >
+        #{endowment,jdbcType=DECIMAL},
+      </if>
+      <if test="unemployment != null" >
+        #{unemployment,jdbcType=DECIMAL},
+      </if>
+      <if test="inductriaInjury != null" >
+        #{inductriaInjury,jdbcType=DECIMAL},
+      </if>
+      <if test="birth != null" >
+        #{birth,jdbcType=DECIMAL},
+      </if>
+      <if test="accumulationFund != null" >
+        #{accumulationFund,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lejiyu.payroll.Entity.Insurance" >
+    update insurance_table
+    <set >
+      <if test="medical != null" >
+        medical = #{medical,jdbcType=DECIMAL},
+      </if>
+      <if test="endowment != null" >
+        endowment = #{endowment,jdbcType=DECIMAL},
+      </if>
+      <if test="unemployment != null" >
+        unemployment = #{unemployment,jdbcType=DECIMAL},
+      </if>
+      <if test="inductriaInjury != null" >
+        inductria_injury = #{inductriaInjury,jdbcType=DECIMAL},
+      </if>
+      <if test="birth != null" >
+        birth = #{birth,jdbcType=DECIMAL},
+      </if>
+      <if test="accumulationFund != null" >
+        accumulation_fund = #{accumulationFund,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where employee_id = #{employeeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lejiyu.payroll.Entity.Insurance" >
+    update insurance_table
+    set medical = #{medical,jdbcType=DECIMAL},
+      endowment = #{endowment,jdbcType=DECIMAL},
+      unemployment = #{unemployment,jdbcType=DECIMAL},
+      inductria_injury = #{inductriaInjury,jdbcType=DECIMAL},
+      birth = #{birth,jdbcType=DECIMAL},
+      accumulation_fund = #{accumulationFund,jdbcType=DECIMAL}
+    where employee_id = #{employeeId,jdbcType=BIGINT}
+  </update>
+</mapper>

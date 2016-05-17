@@ -16,10 +16,12 @@ import com.lejiyu.payroll.Common.SalaryHelper;
 import com.lejiyu.payroll.Dao.DepartmentBaseSalaryMapper;
 import com.lejiyu.payroll.Dao.EmployeeMapper;
 import com.lejiyu.payroll.Dao.EmployeeWorkMapper;
+import com.lejiyu.payroll.Dao.InsuranceMapper;
 import com.lejiyu.payroll.Dao.SalaryMapper;
 import com.lejiyu.payroll.Entity.DepartmentBaseSalary;
 import com.lejiyu.payroll.Entity.Employee;
 import com.lejiyu.payroll.Entity.EmployeeWork;
+import com.lejiyu.payroll.Entity.Insurance;
 import com.lejiyu.payroll.Entity.Salary;
 
 @Service
@@ -36,6 +38,9 @@ public class SalaryService {
 
 	@Resource
 	DepartmentBaseSalaryMapper departmentBaseSalaryMapper;
+	
+	@Resource
+	InsuranceMapper insuranceMapper;
 
 	public Salary selectSalary(Long employNumber) throws Exception {
 		Salary salary = salaryMapper.selectByPrimaryKey(employNumber);
@@ -117,7 +122,10 @@ public class SalaryService {
 				BigDecimal.valueOf(departmentBaseSalary.getLevelBaseSalary()), employeeWork.getEmployeeSeniority(),
 				employeeWork.getEmployeeLevel());
 		salary.setExpectSalary(expectSalary);
+		Insurance insurance=SalaryHelper.CalculateInsurance(expectSalary);
+		insurance.setEmployeeId(employee.getEmployNumber());
 		salary.setActuallySalary(SalaryHelper.CalculateActuallySalary(salary));
+		insuranceMapper.updateByPrimaryKeySelective(insurance);
 		employeeWorkMapper.updateByPrimaryKeySelective(employeeWork);
 		salaryMapper.updateByPrimaryKeySelective(salary);
 	}

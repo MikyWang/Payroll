@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.jasper.tagplugins.jstl.core.Out;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -212,6 +213,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "updateEmployeeSalary", method = RequestMethod.POST)
 	public void updateEmployeeSalary(@RequestBody Map<String, Object> map, HttpServletResponse response) throws Exception {
 		try {
+			System.out.println(map);
 			salaryService.updateEmployeeSalary(map);
 		} catch (Exception e) {
 			response.setStatus(404);
@@ -223,6 +225,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public List<Map<String, Object>> getRaises(HttpServletResponse response) throws Exception {
 		try {
+			
 			return userService.getRaises();
 		} catch (Exception e) {
 			response.setStatus(404);
@@ -234,6 +237,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "updateRaise", method = RequestMethod.POST)
 	public void updateRaise(@RequestBody RequireRaise requireRaise, HttpServletResponse response) throws Exception {
 		try {
+			System.out.println(requireRaise);
 			userService.updateRaise(requireRaise);
 		} catch (Exception e) {
 			response.setStatus(404);

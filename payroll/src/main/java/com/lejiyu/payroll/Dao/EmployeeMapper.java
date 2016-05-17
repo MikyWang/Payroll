@@ -7,6 +7,7 @@ import com.lejiyu.payroll.Entity.Employee;
 public interface EmployeeMapper {
 	int deleteByPrimaryKey(Long employNumber);
 
+
 	int insert(Employee record);
 
 	int insertSelective(Employee record);
